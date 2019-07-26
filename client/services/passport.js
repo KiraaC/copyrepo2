@@ -35,4 +35,12 @@ const localLogin = new LocalStrategy(localOptions, async (email, password, done)
     //     }
     // }
 });
+// json web tolkens = Jwt
+// tell strategy where to look for tolken
+const jwtOptions = {
+    // tells jwt strat request, handled by passport
+jwtFromRequests: ExtractJwt.fromHeader('authrization'),
+secretOrKey: config.secret
+};
+
 passport.use(localLogin);
