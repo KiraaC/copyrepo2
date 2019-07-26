@@ -1,3 +1,4 @@
+// kira copy
 const passport = require('passport');
 const user = require('./../node_modules/User');
 const config = require('./../config');
@@ -24,23 +25,37 @@ const localLogin = new LocalStrategy(localOptions, async (email, password, done)
                 }
                 return done(null, user);
             });
-        }catch (e){
+        } catch (e) {
             done(e, false);
         }
-    //     try {
-    //         const isMatch = await bcrypt.compare(candiatePassword, user.password);
-    //         callback(null, isMatch);
-    //     } catch (e) {
-    //         callback(e);
-    //     }
-    // }
-});
+        //     try {
+        //         const isMatch = await bcrypt.compare(candiatePassword, user.password);
+        //         callback(null, isMatch);
+        //     } catch (e) {
+        //         callback(e);
+        //     }
+        // }
+    });
 // json web tolkens = Jwt
 // tell strategy where to look for tolken
 const jwtOptions = {
     // tells jwt strat request, handled by passport
-jwtFromRequests: ExtractJwt.fromHeader('authrization'),
-secretOrKey: config.secret
+    jwtFromRequests: ExtractJwt.fromHeader('authrization'),
+    secretOrKey: config.secret
+const jwlLogin = new JwtStrategy(jwlOptions, async (payload, done) => {
+        try {
+            cont user = await User.findById(payload.sub);
+            if (user) {
+                done(null, user):
+            } else {
+                done(null, false):
+            }
+        } catch (e) {
+            done(e, false);
+        }
+        passport.use(localLogin);
+        passport.use(jwlLogin);
+    })
 };
 
 passport.use(localLogin);
